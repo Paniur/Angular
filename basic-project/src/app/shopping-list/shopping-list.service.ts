@@ -15,12 +15,36 @@ export class ShoppingListService
     }
     addIngredient(ingredient: Ingredient)
     {
-        this.ingredients.push(ingredient);
-        this.ingredientsChanged.emit(this.ingredients.slice());
+        let indexOfIngredient = this.ingredients.findIndex((myIngredient) => myIngredient.name === ingredient.name);
+        if(indexOfIngredient == -1)
+        {
+            this.ingredients.push(ingredient);
+            this.ingredientsChanged.emit(this.ingredients.slice());
+        }
+        else
+        {
+            this.ingredients[indexOfIngredient].amount += ingredient.amount;
+            this.ingredientsChanged.emit(this.ingredients.slice());
+        }
+        
     }
     addIngredients(ingredients: Ingredient[])
     {
-        this.ingredients.push(...ingredients);
+        for(let ingredient of ingredients)
+        {
+            let indexOfIngredient = this.ingredients.findIndex((myIngredient) => myIngredient.name === ingredient.name);
+            if(indexOfIngredient == -1)
+            {
+                this.ingredients.push(ingredient);
+                //this.ingredientsChanged.emit(this.ingredients.slice());
+            }
+            else
+            {
+                this.ingredients[indexOfIngredient].amount += ingredient.amount;
+                //this.ingredientsChanged.emit(this.ingredients.slice());
+            }
+        }
+        //this.ingredients.push(...ingredients);
         this.ingredientsChanged.emit(this.ingredients.slice());
     }
 }
